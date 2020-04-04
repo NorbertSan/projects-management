@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Title from "components/atoms/Title";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+import theme from "theme";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -10,6 +14,7 @@ const StyledWrapper = styled.div`
   margin-top: 50px;
   padding-left: 15%;
   width: 50%;
+  color: ${theme.tertiaryColor};
 `;
 const StyledDataInfo = styled.div`
   display: flex;
@@ -24,26 +29,48 @@ const StyledDataInfo = styled.div`
     border-top: 1px solid grey;
   }
 `;
+const StyledLoader = styled.div`
+  text-align: center;
+  font-size: ${theme.fontSize.l};
+  color: ${theme.tertiaryColor};
+  margin-top: 30px;
+`;
 
-const ProjectDetails = ({ match }) => {
-  console.log(match.params.id);
+const ProjectDetails = ({ project }) => {
   return (
-    <StyledWrapper>
-      <Title>Project Title</Title>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus porro
-        aliquam dolorum nulla delectus aut, eligendi est maiores eum
-        perspiciatis enim quaerat accusamus aliquid quia recusandae fugit
-        tempora alias quis beatae iusto. Nulla commodi cumque at doloribus
-        numquam, nemo deleniti soluta obcaecati accusantium, aperiam rem hic
-        delectus exercitationem recusandae reiciendis.
-      </p>
-      <StyledDataInfo>
-        <p>Posted by Norbert</p>
-        <p>2nd September, 2am</p>
-      </StyledDataInfo>
-    </StyledWrapper>
+    <>
+      {project ? (
+        <StyledWrapper>
+          <Title>{project.title}</Title>
+          <p>{project.content}</p>
+          <StyledDataInfo>
+            <p>
+              Posted by {project.authorFirstName} {project.authorLastName}
+            </p>
+            <p>2nd September, 2am</p>
+          </StyledDataInfo>
+        </StyledWrapper>
+      ) : (
+        <StyledLoader>Loading project...</StyledLoader>
+      )}
+    </>
   );
 };
 
-export default withRouter(ProjectDetails);
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id;
+  const projects = state.firestore.data.projects;
+  const project = projects ? projects[id] : null;
+  return {
+    project,
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    {
+      collection: "projects",
+    },
+  ])
+)(withRouter(ProjectDetails));

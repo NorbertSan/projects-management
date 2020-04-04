@@ -14,9 +14,11 @@ const GlobalStyle = createGlobalStyle`
     body{
         margin:0;
         font-size:1.6rem;
-        background:url(${backgroundImage}) no-repeat center center /cover;
-        background:${theme.secondaryColor};
-        /* background:white; */
+
+    }
+    a{
+        text-decoration:none;
+        color:white;
     }
 `;
 

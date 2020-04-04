@@ -20,12 +20,9 @@ const ProjectsList = ({ projects }) => (
   </StyledWrapper>
 );
 
-const mapStateToProps = (state) => {
-  console.log(state);
-  return {
-    projects: state.firestore.ordered.projects,
-  };
-};
+const mapStateToProps = (state) => ({
+  projects: state.firestore.ordered.projects,
+});
 
 export default compose(
   connect(mapStateToProps),

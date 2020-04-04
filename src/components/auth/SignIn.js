@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import theme from "theme";
+import { signIn } from "actions/authAction";
+import { connect } from "react-redux";
 import Title from "components/atoms/Title";
 
 const StyledWrapper = styled.div`
@@ -61,6 +63,12 @@ const StyledButton = styled.button`
   letter-spacing: 1px;
   margin-top: 40px;
 `;
+const StyledAlert = styled.div`
+  font-weight: ${theme.fontWeight.bold};
+  color: ${theme.yellowishColor};
+  text-align: center;
+  margin-top: 30px;
+`;
 class SignIn extends React.Component {
   state = {
     email: "",
@@ -73,13 +81,23 @@ class SignIn extends React.Component {
       [type]: value,
     });
   };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.signIn(this.state);
+    this.setState({
+      email: "",
+      password: "",
+    });
+  };
 
   render() {
     const { email, password } = this.state;
+    const { authError } = this.props;
     const onChangeHandler = this.onChangeHandler;
+    const handleSubmit = this.handleSubmit;
     return (
       <StyledWrapper>
-        <StyledForm>
+        <StyledForm onSubmit={(e) => handleSubmit(e)}>
           <StyledTitle>Sign in</StyledTitle>
           <StyledInputContainer>
             <StyledLabel htmlFor="email">Email</StyledLabel>
@@ -104,10 +122,15 @@ class SignIn extends React.Component {
             />
           </StyledInputContainer>
           <StyledButton type="submit">Login</StyledButton>
+          {authError && <StyledAlert>{authError}</StyledAlert>}
         </StyledForm>
       </StyledWrapper>
     );
   }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => ({
+  authError: state.auth.authError,
+});
+
+export default connect(mapStateToProps, { signIn })(SignIn);

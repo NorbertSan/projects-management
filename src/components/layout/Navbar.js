@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import SignInLinks from "components/layout/SignInLinks";
 import SignUpLinks from "components/layout/SignUpLinks";
 import Logo from "components/atoms/Logo";
+import { connect } from "react-redux";
 
 const StyledWrapper = styled.header`
   width: 100%;
@@ -28,8 +29,12 @@ const Navbar = () => (
         MarioPlan
       </Logo>
       <SignInLinks />
-      {/* <SignUpLinks /> */}
+      <SignUpLinks />
     </StyledNavLinks>
   </StyledWrapper>
 );
-export default Navbar;
+
+const mapStateToProps = (state) => {
+  console.log(state);
+};
+export default connect(mapStateToProps)(Navbar);

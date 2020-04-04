@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { logOut } from "actions/authAction";
 import theme from "theme";
 
 const StyledWrapper = styled.ul`
@@ -31,14 +33,23 @@ const StyledLetters = styled.span`
   font-size: ${theme.fontSize.m};
   color: ${theme.navigationColor};
 `;
-const SignInLinks = () => (
+const StyledLogOut = styled.a`
+  text-decoration: none;
+  margin: 0 40px;
+  font-size: ${theme.fontSize.m};
+  font-weight: ${theme.fontWeight.bold};
+  color: white;
+  cursor: pointer;
+  z-index: 9;
+`;
+const SignInLinks = ({ logOut }) => (
   <StyledWrapper>
     <StyledLink to="/create">New project</StyledLink>
-    <StyledLink to="/">Log out</StyledLink>
+    <StyledLogOut onClick={logOut}>Log out</StyledLogOut>
     <StyledInitials>
       <StyledLetters>MS</StyledLetters>
     </StyledInitials>
   </StyledWrapper>
 );
 
-export default SignInLinks;
+export default connect(null, { logOut })(SignInLinks);

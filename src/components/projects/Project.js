@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import theme from "theme";
 import Title from "components/atoms/Title";
+import { Link } from "react-router-dom";
 
 const StyledWrapper = styled.li`
   border-radius: 10px;
@@ -24,15 +25,16 @@ const StyledUserName = styled.p`
   color: grey;
   margin: 0;
 `;
-const ProjectsList = ({ project }) => (
-  <StyledWrapper>
-    <Title>{project.title}</Title>
-    <StyledBody>{project.content}</StyledBody>
-    <StyledUserName>
-      Published by {project.authorFirstName} {project.authorLastName}
-    </StyledUserName>
-    {/* <StyledDateInfo>Today at :{project.createdAt}</StyledDateInfo> */}
-  </StyledWrapper>
+const Project = ({ project }) => (
+  <Link to={`project/${project.id}`}>
+    <StyledWrapper>
+      <Title>{project.title}</Title>
+      <StyledUserName>
+        Published by {project.authorFirstName} {project.authorLastName}
+      </StyledUserName>
+      {/* <StyledDateInfo>Today at :{project.createdAt}</StyledDateInfo> */}
+    </StyledWrapper>
+  </Link>
 );
 
-export default ProjectsList;
+export default Project;
