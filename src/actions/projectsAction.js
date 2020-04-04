@@ -1,15 +1,30 @@
-import { CREATE__PROJECT } from "./types";
+import { CREATE__PROJECT, CREATE__PROJECT__ERROR } from "./types";
 
-export const createProject = (project) => (
+export const createProject = (project) => async (
   dispatch,
   getState,
   { getFirebase, getFirestore }
 ) => {
-  // async code
-  dispatch({
-    type: CREATE__PROJECT,
-    payload: {
-      project,
-    },
-  });
+  try {
+    const firestore = getFirestore();
+    await firestore.collection("projects").add({
+      ...project,
+      authorFirstName: "Jan",
+      authorLastName: "Kowalski",
+      createdAt: new Date(),
+    });
+    dispatch({
+      type: CREATE__PROJECT,
+      payload: {
+        project,
+      },
+    });
+  } catch (err) {
+    dispatch({
+      type: CREATE__PROJECT__ERROR,
+      payload: {
+        err,
+      },
+    });
+  }
 };

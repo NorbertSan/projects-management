@@ -1,4 +1,4 @@
-import { CREATE__PROJECT } from "actions/types";
+import { CREATE__PROJECT, CREATE__PROJECT__ERROR } from "actions/types";
 
 const initialState = {
   projects: [
@@ -29,9 +29,15 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case CREATE__PROJECT:
+      console.log("create project", action.payload.project);
       return {
-        ...state,
-        projects: [...state.projects, action.payload.project],
+        state,
+      };
+
+    case CREATE__PROJECT__ERROR:
+      console.log("create project error", action.payload.err);
+      return {
+        state,
       };
     default:
       return state;

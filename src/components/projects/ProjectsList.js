@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Project from "components/projects/Project";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 const StyledWrapper = styled.ul`
   margin: 0;
@@ -13,12 +15,23 @@ const StyledWrapper = styled.ul`
 
 const ProjectsList = ({ projects }) => (
   <StyledWrapper>
-    {projects && projects.map((project) => <Project project={project} />)}
+    {projects &&
+      projects.map((project) => <Project key={project.id} project={project} />)}
   </StyledWrapper>
 );
 
-const mapStateToProps = (state) => ({
-  projects: state.projects.projects,
-});
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    projects: state.firestore.ordered.projects,
+  };
+};
 
-export default connect(mapStateToProps)(ProjectsList);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    {
+      collection: "projects",
+    },
+  ])
+)(ProjectsList);

@@ -28,10 +28,10 @@ const ProjectsList = ({ project }) => (
   <StyledWrapper>
     <Title>{project.title}</Title>
     <StyledBody>{project.content}</StyledBody>
-    <StyledUserName>Published by Norbert</StyledUserName>
-    <StyledDateInfo>
-      Today at :{project.created && project.created}
-    </StyledDateInfo>
+    <StyledUserName>
+      Published by {project.authorFirstName} {project.authorLastName}
+    </StyledUserName>
+    {/* <StyledDateInfo>Today at :{project.createdAt}</StyledDateInfo> */}
   </StyledWrapper>
 );
 
